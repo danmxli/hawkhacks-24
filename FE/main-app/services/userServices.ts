@@ -36,3 +36,13 @@ export const syncUserEmail = async () => {
         console.error('Error:', error);
     }
 }
+
+export const sendEmail = async () => {
+    try {
+        const response = await authFetch('emails/send-email');
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}

@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { CircleCheck } from "lucide-react";
-import { syncUserEmail } from "@/services/userServices";
+import { sendEmail, syncUserEmail } from "@/services/userServices";
 
 const EmailAccounts: React.FC = () => {
 
@@ -57,7 +57,7 @@ const EmailAccounts: React.FC = () => {
                         disabled={emailSyncStatus}
                         className={emailSyncStatus ? 'bg-green-500 text-white' : ''}
                     >
-                        {emailSyncStatus ? 'Email Synced' : 'Connect to email'}
+                        {emailSyncStatus ? 'Monitoring' : 'Start monitoring'}
                     </Button>
                     {emailSyncStatus && (
                         <>
@@ -69,6 +69,7 @@ const EmailAccounts: React.FC = () => {
                     </Badge>
                         </>
                     )}
+                    <Button onClick={async () => await sendEmail()}>send email</Button>
                 </CardFooter>
             </Card>
         </main>
