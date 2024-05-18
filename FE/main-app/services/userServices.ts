@@ -39,11 +39,7 @@ export const getUserInfo = async () => {
 
 export const getEmailPdf = async (fileName: string) => {
     try {
-        const response = await authFetch('emails/get-email-pdf', {
-            method: 'POST',
-            body: JSON.stringify({ fileName: fileName }),
-        });
-        console.log(response)
+        const response = await authFetch(`emails/get-email-pdf/${fileName}`);
         return response
     } catch (error) {
         console.error('Error:', error);

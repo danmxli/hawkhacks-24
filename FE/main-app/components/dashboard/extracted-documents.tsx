@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef, useEffect } from "react";
 import { Card } from "../ui/card";
 import {
@@ -54,10 +55,11 @@ const ExtractedDocuments: React.FC = () => {
 
     const handleFetchPdf = async (fileName: string) => {
         try {
+            console.log(fileName)
             const response = await getEmailPdf(fileName);
             const blob = await response?.blob();
             if (blob) {
-                const url = URL.createObjectURL(blob);
+                const url = window.URL.createObjectURL(blob);
                 setPdfContent(url);
             } else {
                 console.error("Empty blob received.");

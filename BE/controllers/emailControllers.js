@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
+const { Readable } = require("stream");
+
 const {
   TextractClient,
   AnalyzeExpenseCommand,
@@ -165,7 +167,8 @@ const parseTextractResponse = (response) => {
 };
 
 const getEmailPdf = async (req, res) => {
-  const { fileName } = req.body;
+  const { fileName } = req.params;
+  console.log(req.params)
   const pdfFilePath = path.join(
     __dirname,
     "..",
@@ -178,13 +181,28 @@ const getEmailPdf = async (req, res) => {
     return res.status(404).json({ message: "File not found" });
   }
 
-  res.sendFile(pdfFilePath, (err) => {
-    if (err) {
-      console.error("Error sending file: ", err);
-      res.status(500).send("Error sending file");
-    }
-  });
+  try {
+    const fileBuffer = fs.readFileSync(pdfFilePath);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename="${fileName}-page-1.pdf"`
+    );
+
+    // Stream the PDF file
+    const readStream = new Readable();
+    readStream._read = () => {}; // _read is required but you can noop it
+    readStream.push(fileBuffer);
+    readStream.push(null); // Indicates the end of the stream (EOF)
+
+    readStream.pipe(res);
+  } catch (error) {
+    console.error("Error sending PDF file:", error);
+    res.status(500).send("An error occurred while sending the PDF file.");
+  }
 };
+
 
 
 module.exports = {
