@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getUserInfo,
-  updateUser,
-} = require("../controllers/userControllers");
+  authControllers
+} = require("../controllers");
 const { authenticateUser } = require("../middleware/authMiddleware");
-require('dotenv').config();
 
-router.get("/", authenticateUser, getUserInfo);
-router.put("/", authenticateUser, updateUser);
+router.get("/", authenticateUser, authControllers.getUserInfo);
+router.put("/", authenticateUser, authControllers.updateUser);
 
 module.exports = router;

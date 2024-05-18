@@ -22,7 +22,7 @@ app.use(express.json());
 
 // CORS middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.APP_URL,
   credentials: true
 }));
 
@@ -55,4 +55,7 @@ mongoose
   .then(() =>
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
   )
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });

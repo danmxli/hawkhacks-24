@@ -1,25 +1,18 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../schemas/userSchema");
+const { userService } = require('./services');
 
 const getUserInfo = asyncHandler(async (req, res) => {
-  const user = User.findOne({ email: req.session.email });
+  const user = await userService.getUserByEmail(req.session.email);
   res.status(200).json(user);
 });
 
 const updateUser = asyncHandler(async (req, res) => {
   try {
-    if (!(await User.exists({ email: req.session.email }))) {
+    if (!(await userService.userExists(req.session.email))) {
       return res.status(400).json({ message: `User not found` });
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      { email: req.session.email },
-      req.body,
-      {
-        new: true,
-      }
-    );
-
+    const updatedUser = await userService.updateUserByEmail(req.session.email, req.body);
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -1,16 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {
-  handleGoogleLogin,
-  handleGoogleCallback,
-  handleLogout,
-  refreshAccessToken,
-} = require("../controllers/authControllers");
+const { authControllers } = require("../controllers");
 const { authenticateUser } = require("../middleware/authMiddleware");
 
-router.post("/google", handleGoogleLogin);
-router.get("/google/callback", handleGoogleCallback);
-router.get("/logout", authenticateUser, handleLogout);
-router.get("/refresh-access-token", authenticateUser, refreshAccessToken);
+router.post("/google", authControllers.handleGoogleLogin);
+router.get("/google/callback", authControllers.handleGoogleCallback);
+router.get("/logout", authControllers.handleLogout);
+router.get("/refresh-access-token", authenticateUser, authControllers.refreshAccessToken);
 
 module.exports = router;
