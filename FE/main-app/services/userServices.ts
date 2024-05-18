@@ -44,6 +44,7 @@ export const getEmailPdf = async (fileName: string) => {
             body: JSON.stringify({ fileName: fileName }),
         });
         console.log(response)
+        return response
     } catch (error) {
         console.error('Error:', error);
     }
