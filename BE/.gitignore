@@ -1,6 +1,7 @@
 # Node modules directory
 node_modules/
-
+googleKeys
+data/
 # Logs
 logs/
 *.log
@@ -10,7 +11,7 @@ yarn-error.log*
 
 # Environment variables
 .env
-
+hawkhacks2024-1328881bbf19.json
 # Directory for local environment-specific configurations
 .env.local
 .env.development.local
