@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { authService } = require('./services');
+const { authService } = require('../services');
 
 const handleGoogleLogin = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin", process.env.APP_URL);

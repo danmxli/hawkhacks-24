@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { userService } = require('./services');
+const { userService } = require('../services');
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = await userService.getUserByEmail(req.session.email);

@@ -1,6 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 const fetch = require("node-fetch"); 
 const User = require("../schemas/userSchema");
+const { default: googleScopes } = require("../config/googleScopes");
 
 const googleOAuth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
@@ -12,9 +13,7 @@ const generateGoogleAuthUrl = () => {
   return googleOAuth2Client.generateAuthUrl({
     access_type: "offline",
     scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email",
-      "openid",
+      googleScopes
     ],
     prompt: "consent",
   });

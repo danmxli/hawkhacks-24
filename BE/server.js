@@ -6,8 +6,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const errorHandler = require("./middleware/errorHandlerMiddleware");
-const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/authRoutes");
+const {userRoutes, authRoutes, emailRoutes} = require("./routes");
+
 
 const app = express();
 
@@ -45,6 +45,7 @@ app.use(errorHandler);
 // Routes
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/emails", emailRoutes);
 
 // Database connection and server initialization
 const PORT = process.env.PORT || 3000;
