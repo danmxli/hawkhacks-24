@@ -1,12 +1,19 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateDashboardPhase } from "@/slices/dashboardSlice";
+import { logoutUser } from "@/services/userServices";
 
 import BlobSVG from "./ui/logo";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardContent } from "./ui/card";
-import { Home, Mail, Files, CircleUserRoundIcon, Settings } from "lucide-react";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Home, Mail, Files, CircleUserRoundIcon, Settings, Router } from "lucide-react";
 
 const toggleOptions = [
     { icon: Home, label: "Home", phase: "home" },
@@ -15,9 +22,20 @@ const toggleOptions = [
 ];
 
 const Sidebar: React.FC = () => {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const dashboardPhase = useSelector((state: RootState) => state.dashboard.dashboardPhase);
     const email = useSelector((state: RootState) => state.userInfo.email);
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            router.push("/");
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <main className="flex flex-col h-screen w-64 p-2 border-r">
@@ -44,11 +62,24 @@ const Sidebar: React.FC = () => {
             <Card className="flex-none w-full p-3">
                 <CardHeader>
                     <CircleUserRoundIcon className="w-full" />
-                    <h1 className="truncate ... font-semibold">{email}</h1>
+                    <h1 className="truncate ... font-medium">{email}</h1>
                 </CardHeader>
-                <CardContent className="flex justify-center">
-                    <Button variant="secondary"><Settings className="mr-2 h-4 w-4" />Configure Settings</Button>
-                </CardContent>
+                <>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button className="w-full" variant="secondary"><Settings className="mr-2 h-4 w-4" />User Information</Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80">
+                            <div className="space-y-2">
+                                <h4 className="font-medium leading-none">{email}</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Authenticated User
+                                </p>
+                                <Button onClick={handleLogout}>Logout</Button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                </>
             </Card>
         </main>
     );

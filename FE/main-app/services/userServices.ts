@@ -13,6 +13,16 @@ export const loginUserWithGoogle = async () => {
     }
 }
 
+export const logoutUser = async () => {
+    try {
+        await authFetch('auth/logout', {
+            method: 'GET',
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 export const getUserInfo = async () => {
     try {
         const response = await authFetch('users/', {
