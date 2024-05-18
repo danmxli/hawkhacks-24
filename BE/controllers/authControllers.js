@@ -14,7 +14,7 @@ const googleOAuth2Client = new OAuth2Client(
 
 // Function to initiate Google login
 const handleGoogleLogin = async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
 
@@ -49,7 +49,7 @@ const handleGoogleCallback = async (req, res) => {
     if (!(await User.exists({ email: userData.email }))) {
       await User.create({ email: userData.email });
     }
-    return res.redirect("http://localhost:5173/expenses");
+    return res.redirect("http://localhost:3001/expenses");
   } catch (err) {
     console.error("Error logging in with OAuth2", err);
     return res.status(500).json({ message: err.message });
