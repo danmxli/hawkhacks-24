@@ -12,9 +12,7 @@ const googleOAuth2Client = new OAuth2Client(
 const generateGoogleAuthUrl = () => {
   return googleOAuth2Client.generateAuthUrl({
     access_type: "offline",
-    scope: [
-      googleScopes
-    ],
+    scope: googleScopes,
     prompt: "consent",
   });
 };
