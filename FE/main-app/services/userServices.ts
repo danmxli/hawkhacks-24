@@ -1,4 +1,4 @@
-export const loginUser = async () => {
+export const loginUserWithGoogle = async () => {
     try {
         const response = await fetch('http://localhost:3000/auth/google', {
             method: 'POST',

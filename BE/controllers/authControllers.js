@@ -50,7 +50,7 @@ const handleGoogleCallback = async (req, res) => {
     if (!(await User.exists({ email: userData.email }))) {
       await User.create({ email: userData.email });
     }
-    return res.redirect("http://localhost:3001/expenses");
+    return res.redirect("http://localhost:3001/dashboard");
   } catch (err) {
     console.error("Error logging in with OAuth2", err);
     return res.status(500).json({ message: err.message });

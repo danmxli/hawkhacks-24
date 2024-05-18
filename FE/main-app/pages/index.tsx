@@ -1,10 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { loginUser } from "@/services/userServices";
+import { loginUserWithGoogle } from "@/services/userServices";
 
 export default function Home() {
+
+  const handleLoginWithGoogle = async () => {
+    try {
+        const data = await loginUserWithGoogle()
+        console.log(data)
+        window.location.href = data.url;
+    } catch (err) {
+        throw err
+    }
+}
+
   return (
     <main className="h-screen flex items-center justify-center">
-      <Button onClick={() => loginUser()}>Login</Button>
+      <Button onClick={() => handleLoginWithGoogle()}>Login</Button>
     </main>
   );
 }
