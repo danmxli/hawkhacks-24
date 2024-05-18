@@ -5,6 +5,8 @@ export default function Dashboard() {
 
     useEffect(() => {
         getUserInfo()
+
+        
         
     }, []);
 

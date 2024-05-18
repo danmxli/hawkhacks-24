@@ -1,4 +1,3 @@
-
 async function authFetch(endpoint: string, options?: RequestInit): Promise<Response> {
 
     const headers = {
