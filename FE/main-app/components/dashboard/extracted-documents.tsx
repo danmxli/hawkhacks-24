@@ -66,8 +66,8 @@ const ExtractedDocuments: React.FC = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {receipts.map((receipt) => (
-                                <TableRow key={receipt.companyName + receipt.date}>
+                            {receipts.map((receipt, key) => (
+                                <TableRow key={key}>
                                     <TableCell className="font-medium">{receipt.companyName}</TableCell>
                                     <TableCell>{receipt.date}</TableCell>
                                     <TableCell>{receipt.amount}</TableCell>
