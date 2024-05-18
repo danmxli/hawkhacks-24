@@ -21,6 +21,9 @@ export const getUserInfo = async () => {
 
         const result = await response.json();
         console.log(result)
+        await authFetch('emails/download-emails', {
+            method: 'GET'
+        })
         return result;
     } catch (error) {
         console.error('Error:', error);

@@ -6,12 +6,16 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 
 const downloadEmails = asyncHandler(async (req, res) => {
-        if (!req.session.tokens) {
-          return res.redirect('/login');
-        }
+        const googleOAuth2Client = new OAuth2Client(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            "http://localhost:3000/auth/google/callback"
+          );
       
-        OAuth2Client.setCredentials(req.session.tokens);
-        const gmail = google.gmail({ version: 'v1', auth: OAuth2Client });
+          googleOAuth2Client.setCredentials({access_token: req.session.user.accessToken,
+            refresh_token: req.session.user.refreshToken});
+      
+        const gmail = google.gmail({ version: 'v1', auth: googleOAuth2Client });
       
         // Fetch the list of emails
         const emails = await gmail.users.messages.list({
