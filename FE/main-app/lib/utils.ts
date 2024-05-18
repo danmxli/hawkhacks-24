@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 interface ReceiptItem {
+  fileName: string,
   companyName: string,
   amount: string,
   date: string,

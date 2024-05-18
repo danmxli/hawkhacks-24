@@ -8,14 +8,16 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { getUserInfo } from "@/services/userServices";
+import { getUserInfo, getEmailPdf } from "@/services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateReceipts } from "@/slices/userInfoSlice";
 import { ReceiptData } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const transformPayload = (payload: any[]): ReceiptData => {
     return payload.map(item => ({
+        fileName: item.FILE_NAME,
         companyName: item.VENDOR_NAME,
         amount: item.SUBTOTAL,
         date: item.INVOICE_RECEIPT_DATE,
@@ -68,7 +70,7 @@ const ExtractedDocuments: React.FC = () => {
                         <TableBody>
                             {receipts.map((receipt, key) => (
                                 <TableRow key={key}>
-                                    <TableCell className="font-medium">{receipt.companyName}</TableCell>
+                                    <TableCell className="font-medium">{receipt.companyName}<Button onClick={() => getEmailPdf(receipt.fileName)}>hi</Button></TableCell>
                                     <TableCell>{receipt.date}</TableCell>
                                     <TableCell>{receipt.amount}</TableCell>
                                     <TableCell>{receipt.tax}</TableCell>

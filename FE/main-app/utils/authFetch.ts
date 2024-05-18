@@ -1,4 +1,4 @@
-async function authFetch(endpoint: string, options?: RequestInit): Promise<Response> {
+async function authFetch(endpoint: string, options?: any): Promise<Response> {
 
     const headers = {
         'Content-Type': 'application/json',

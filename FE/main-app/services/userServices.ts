@@ -37,6 +37,20 @@ export const getUserInfo = async () => {
     }
 }
 
+export const getEmailPdf = async (fileName: string) => {
+    try {
+        const response = await authFetch('emails/get-email-pdf', {
+            method: 'POST',
+            body: {
+                fileName
+            }
+        });
+        console.log(response)
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 export const syncUserEmail = async () => {
     try {
         const response = await authFetch('users/sync-email');
