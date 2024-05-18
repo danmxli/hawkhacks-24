@@ -28,7 +28,7 @@ const handleGoogleCallback = async (req, res) => {
     console.error("Error logging in with OAuth2", err);
     return res.status(500).json({ message: err.message });
   }
-});
+};
 
 const handleLogout = asyncHandler(async (req, res) => {
   if (req.session) {
