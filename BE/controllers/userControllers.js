@@ -3,13 +3,13 @@ const { userService } = require('../services');
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = await userService.getUserByEmail(req.session.user.email);
-  console.log(req.session.email)
+  console.log(req.session.user.email)
   res.status(200).json({ user });
 });
 
 const updateUser = asyncHandler(async (req, res) => {
   try {
-    if (!(await userService.userExists(req.session.email))) {
+    if (!(await userService.userExists(req.session.user.email))) {
       return res.status(400).json({ message: `User not found` });
     }
 
