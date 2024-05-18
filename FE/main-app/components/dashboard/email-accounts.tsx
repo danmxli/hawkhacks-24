@@ -1,7 +1,9 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateDashboardPhase } from "@/slices/dashboardSlice";
+import { updateIsEmailSynced } from "@/slices/userInfoSlice";
 
 import {
     Card,
@@ -15,16 +17,27 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { CircleCheck } from "lucide-react";
-
+import { syncUserEmail } from "@/services/userServices";
 
 const EmailAccounts: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const dashboardPhase = useSelector((state: RootState) => state.dashboard.dashboardPhase);
     const email = useSelector((state: RootState) => state.userInfo.email);
+    const emailSyncStatus = useSelector((state: RootState) => state.userInfo.isEmailSynced);
+
+
+    const handleSyncEmail = async () => {
+        try {
+            await syncUserEmail();
+            dispatch(updateIsEmailSynced(true))
+        } catch(err) {
+            console.error('Error syncing email:', err);
+        }
+    }
 
     return (
-        <main className="w-full h-full flex items-center justify-center">
+    <main className="w-full h-full flex items-center justify-center">
             <Card>
                 <CardHeader className="border-b">
                     <div className="flex flex-row items-center gap-3">
@@ -36,15 +49,26 @@ const EmailAccounts: React.FC = () => {
                     </div>
                 </CardHeader>
                 <CardContent>
-
+                    {/* Add any additional content here */}
                 </CardContent>
                 <CardFooter className="flex gap-3">
-                    <Badge className="flex items-center">
+                    <Button
+                        onClick={() => handleSyncEmail()}
+                        disabled={emailSyncStatus}
+                        className={emailSyncStatus ? 'bg-green-500 text-white' : ''}
+                    >
+                        {emailSyncStatus ? 'Email Synced' : 'Connect to email'}
+                    </Button>
+                    {emailSyncStatus && (
+                        <>
+                        <Badge className="flex items-center">
                         <CircleCheck className="pr-1.5 text-green-500" />monitoring
                     </Badge>
                     <Badge>
                         <CircleCheck className="pr-1.5 text-green-500" />authenticated
                     </Badge>
+                        </>
+                    )}
                 </CardFooter>
             </Card>
         </main>

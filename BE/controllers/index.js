@@ -5,5 +5,5 @@ const emailControllers = require("./emailControllers");
 module.exports = {
     authControllers,
     userControllers,
-    emailControllers
+    emailControllers,
 };

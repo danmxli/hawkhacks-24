@@ -25,7 +25,7 @@ const downloadEmails = asyncHandler(async (req, res) => {
   // Fetch the list of emails
   const emails = await gmail.users.messages.list({
     userId: 'me',
-    maxResults: 100, // Adjust as needed
+    maxResults: 10, // Adjust as needed
   });
 
   const messages = [];
@@ -54,6 +54,8 @@ const downloadEmails = asyncHandler(async (req, res) => {
   res.json({ message: 'PDFs saved successfully' });
 });
 
+
+
 module.exports = {
-  downloadEmails,
-};
+  downloadEmails
+}

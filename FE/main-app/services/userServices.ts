@@ -21,10 +21,16 @@ export const getUserInfo = async () => {
 
         const result = await response.json();
         console.log(result)
-        // TODO implement endpoint
-        await authFetch('emails/download-emails', {
-            method: 'GET'
-        })
+        return result;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export const syncUserEmail = async () => {
+    try {
+        const response = await authFetch('users/sync-email');
+        const result = await response.json();
         return result;
     } catch (error) {
         console.error('Error:', error);

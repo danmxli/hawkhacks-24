@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { userService } = require('../services');
+const User = require("../schemas/userSchema");
 
 const getUserInfo = asyncHandler(async (req, res) => {
   if (!req.session.user || !req.session.user.email) {
@@ -21,9 +22,16 @@ const updateUser = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+
 });
+
+const syncUserEmail = asyncHandler(async (req, res) => {
+  await User.findOneAndUpdate({ email: req.session.user.email }, { isEmailSynced: true });
+  res.status(200).json({ message: 'Emails synced successfully' });
+})
 
 module.exports = {
   getUserInfo,
   updateUser,
+  syncUserEmail
 };

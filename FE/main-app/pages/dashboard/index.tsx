@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { updateEmail } from "@/slices/userInfoSlice";
+import { updateEmail, updateIsEmailSynced } from "@/slices/userInfoSlice";
 import Sidebar from "@/components/sidebar";
 import Homepage from "@/components/dashboard/homepage";
 import ExtractedDocuments from "@/components/dashboard/extracted-documents";
@@ -24,7 +24,9 @@ export default function Dashboard() {
                     router.push("/")
                     return
                 }
+                console.log(res.user)
                 dispatch(updateEmail(res.user.email))
+                dispatch(updateIsEmailSynced(res.user.isEmailSynced))
             } catch (err) {
                 console.error(err);
             }

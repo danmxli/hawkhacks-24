@@ -7,5 +7,6 @@ const { authenticateUser } = require("../middleware/authMiddleware");
 
 router.get("/", authenticateUser, userControllers.getUserInfo);
 router.put("/", authenticateUser, userControllers.updateUser);
+router.get('/sync-email', userControllers.syncUserEmail);
 
 module.exports = router;
