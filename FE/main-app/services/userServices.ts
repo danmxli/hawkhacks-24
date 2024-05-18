@@ -41,9 +41,7 @@ export const getEmailPdf = async (fileName: string) => {
     try {
         const response = await authFetch('emails/get-email-pdf', {
             method: 'POST',
-            body: {
-                fileName
-            }
+            body: JSON.stringify({ fileName: fileName }),
         });
         console.log(response)
     } catch (error) {
