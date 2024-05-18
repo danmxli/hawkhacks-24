@@ -10,6 +10,7 @@ const {
   AnalyzeExpenseCommand,
 } = require("@aws-sdk/client-textract");
 const User = require("../schemas/userSchema");
+const { formatDateAndGenerateCategory } = require("../services/chatGPTService");
 
 const textractClient = new TextractClient({ region: "us-east-1" });
 
@@ -64,13 +65,13 @@ const downloadEmails = asyncHandler(async (req, res) => {
 });
 
 const sendEmail = async (req, res) => {
-  console.log('sendEmail')
+  console.log('sendEmail route triggered')
   const pdfFilePath = path.join(
     __dirname,
     "..",
     "data",
     "downloaded-pdfs",
-    "grocery-receipt.pdf"
+    "foodie-fruitie.pdf"
   );
 
   // Create a transporter object using SMTP transport
@@ -124,13 +125,17 @@ const sendEmail = async (req, res) => {
     // Parse Textract response to extract relevant fields
     const extractedData = parseTextractResponse(textractResponse);
     // Find the user and update their receipts
-    const userEmail = 'tonyqiu12345@gmail.com'; // Update this with the appropriate logic to get the user email
+    
+    const { formattedDate, category } = await formatDateAndGenerateCategory(extractedData);
+    extractedData.INVOICE_RECEIPT_DATE = formattedDate;
+    extractedData.CATEGORY = category || 'food';
+    console.log('extractedData', extractedData)
     const user = await User.findOneAndUpdate(
-      { email: userEmail },
+      { email: req.session.user.email },
       { $push: { receipts: extractedData }, $set: { isEmailSynced: true } },
       { new: true, upsert: true }
     );
-
+    console.log('sendEmail route completed')
     res.send({
       message: 'Email sent and PDF analyzed successfully!',
       textractData: extractedData,

@@ -9,6 +9,7 @@ const receiptSchema = new mongoose.Schema({
   TOTAL: { type: String, default: '' },
   VENDOR_ADDRESS: { type: String, default: '' },
   ZIP_CODE: { type: String, default: '' },
+  CATEGORY: { type: String, default: '' },
 });
 
 const userSchema = new mongoose.Schema({

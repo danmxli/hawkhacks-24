@@ -4,7 +4,6 @@ const User = require("../schemas/userSchema");
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = await userService.getUserByEmail(req.session.user.email);
-  console.log(req.session.user.email)
   res.status(200).json({ user });
 });
 
