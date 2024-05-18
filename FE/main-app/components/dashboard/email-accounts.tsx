@@ -59,20 +59,10 @@ const EmailAccounts: React.FC = () => {
                     >
                         {emailSyncStatus ? 'Monitoring' : 'Start monitoring'}
                     </Button>
-                    {emailSyncStatus && (
-                        <>
-                        <Badge className="flex items-center">
-                        <CircleCheck className="pr-1.5 text-green-500" />monitoring
-                    </Badge>
-                    <Badge>
-                        <CircleCheck className="pr-1.5 text-green-500" />authenticated
-                    </Badge>
-                        </>
-                    )}
-                    <Button onClick={async () => await sendEmail('uber-eats.pdf')}>send uber</Button>
+                    {/* <Button onClick={async () => await sendEmail('uber-eats.pdf')}>send uber</Button>
                     <Button onClick={async () => await sendEmail('mcdonalds.pdf')}>send mcdonalds</Button>
                     <Button onClick={async () => await sendEmail('grocery-receipt.pdf')}>send grocery</Button>
-                    <Button onClick={async () => await sendEmail('foodie-fruitie.pdf')}>send foodie fruitie</Button>
+                    <Button onClick={async () => await sendEmail('foodie-fruitie.pdf')}>send foodie fruitie</Button> */}
                 </CardFooter>
             </Card>
         </main>
