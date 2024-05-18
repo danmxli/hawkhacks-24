@@ -6,6 +6,7 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
 const { Readable } = require("stream");
+const xlsx = require("xlsx");
 
 const {
   TextractClient,
@@ -67,13 +68,14 @@ const downloadEmails = asyncHandler(async (req, res) => {
 });
 
 const sendEmail = async (req, res) => {
+  const { fileName } = req.params;
   console.log('sendEmail route triggered')
   const pdfFilePath = path.join(
     __dirname,
     "..",
     "data",
     "downloaded-pdfs",
-    "foodie-fruitie.pdf"
+    fileName
   );
 
   // Create a transporter object using SMTP transport
@@ -211,23 +213,22 @@ const downloadExpensesXLSX = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const receipts = user.receipts;
+    const receipts = user.receipts.map(receipt => receipt.toObject()); // Convert Mongoose documents to plain objects
+    console.log('Receipts:', receipts); // Log receipts to verify data
+
     const categoryGroups = {};
 
     receipts.forEach((receipt) => {
-      const category = receipt.CATEGORY; 
+      const category = receipt.CATEGORY; // CATEGORY is now a String in the schema
       if (!categoryGroups[category]) {
         categoryGroups[category] = [];
       }
 
-      const filteredExpense = {};
-      selectedFields.forEach((field) => {
-        if (receipt[field]) {
-          filteredExpense[field] = receipt[field];
-        }
-      });
-      categoryGroups[category].push(filteredExpense);
+      // Use all keys in the receipt schema
+      categoryGroups[category].push(receipt);
     });
+
+    console.log('Category Groups:', categoryGroups); // Log category groups to verify data
 
     // Create a new workbook
     const workbook = xlsx.utils.book_new();
@@ -256,6 +257,7 @@ const downloadExpensesXLSX = async (req, res) => {
     return res.status(500).json({ message: "Failed to download Excel file" });
   }
 };
+
 
 module.exports = {
   downloadEmails,

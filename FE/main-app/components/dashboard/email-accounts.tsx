@@ -69,7 +69,10 @@ const EmailAccounts: React.FC = () => {
                     </Badge>
                         </>
                     )}
-                    <Button onClick={async () => await sendEmail()}>send email</Button>
+                    <Button onClick={async () => await sendEmail('uber-eats.pdf')}>send uber</Button>
+                    <Button onClick={async () => await sendEmail('mcdonalds.pdf')}>send mcdonalds</Button>
+                    <Button onClick={async () => await sendEmail('grocery-receipt.pdf')}>send grocery</Button>
+                    <Button onClick={async () => await sendEmail('foodie-fruitie.pdf')}>send foodie fruitie</Button>
                 </CardFooter>
             </Card>
         </main>

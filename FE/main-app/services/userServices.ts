@@ -56,11 +56,20 @@ export const syncUserEmail = async () => {
     }
 }
 
-export const sendEmail = async () => {
+export const sendEmail = async (fileName: string) => {
     try {
-        const response = await authFetch('emails/send-email');
+        const response = await authFetch(`emails/send-email/${fileName}`);
         const result = await response.json();
         return result;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export const exportToCSV = async () => {
+    try {
+        const response = await authFetch('emails/export-to-csv');
+        return response;
     } catch (error) {
         console.error('Error:', error);
     }

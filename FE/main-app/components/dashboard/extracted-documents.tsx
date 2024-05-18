@@ -9,7 +9,7 @@ import {
     TableHead,
     TableRow,
 } from "@/components/ui/table";
-import { getUserInfo, getEmailPdf } from "@/services/userServices";
+import { getUserInfo, getEmailPdf, exportToCSV } from "@/services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateReceipts } from "@/slices/userInfoSlice";
@@ -51,6 +51,24 @@ const ExtractedDocuments: React.FC = () => {
         }
     }, [dispatch]);
 
+    const handleExportToCSV = async () => {
+        try {
+
+        const response = await exportToCSV()
+        const blob = await response?.blob()
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.setAttribute("download", "Expenses.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    }
+    catch (error) {
+        console.error("Error exporting to CSV:", error);
+    }
+    }
+
     const [pdfContent, setPdfContent] = useState<string | null>(null); 
 
     const handleFetchPdf = async (fileName: string) => {
@@ -72,7 +90,8 @@ const ExtractedDocuments: React.FC = () => {
 
     return (
         <main className="w-full h-full flex items-center justify-center">
-            <Card>
+            <Button onClick={() => handleExportToCSV()}>Export to CSV</Button>
+                <Card>
                 {!receipts.length ? (
                     <p>No receipts available.</p>
                 ) : (
