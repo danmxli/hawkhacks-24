@@ -99,22 +99,27 @@ const ExtractedDocuments: React.FC = () => {
     };
 
     return (
-        <main className="w-full h-full flex flex-col items-center justify-center gap-6">
-            <Card>
+        <main className="w-full h-screen p-2 flex flex-col items-center justify-center gap-2">
+            <Card className="flex items-center">
+                <Table>
+                    <TableHeader>
+                        <TableRow className="border-none">
+                            <TableHead>Company</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Tax</TableHead>
+                            <TableHead>Total</TableHead>
+                            <TableHead>Address</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                </Table>
+                <Button className="ml-3 mr-1" onClick={() => handleExportToCSV()}><FileSpreadsheet className="mr-2 h-4 w-4" />Export to CSV</Button>
+            </Card>
+            <Card className="overflow-y-scroll relative">
                 {!receipts.length ? (
                     <p>No receipts available.</p>
                 ) : (
                     <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Company</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Amount</TableHead>
-                                <TableHead>Tax</TableHead>
-                                <TableHead>Total</TableHead>
-                                <TableHead>Address</TableHead>
-                            </TableRow>
-                        </TableHeader>
                         <TableBody>
                             {receipts.map((receipt, key) => (
                                 <TableRow key={key}>
@@ -156,7 +161,6 @@ const ExtractedDocuments: React.FC = () => {
                     </Table>
                 )}
             </Card>
-            <Button onClick={() => handleExportToCSV()}><FileSpreadsheet className="mr-2 h-4 w-4" />Export to CSV</Button>
         </main>
     );
 };
