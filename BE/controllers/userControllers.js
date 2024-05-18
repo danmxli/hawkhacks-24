@@ -2,6 +2,9 @@ const asyncHandler = require("express-async-handler");
 const { userService } = require('../services');
 
 const getUserInfo = asyncHandler(async (req, res) => {
+  if (!req.session.user || !req.session.user.email) {
+    return res.status(200).json({ user: null });
+  }
   const user = await userService.getUserByEmail(req.session.user.email);
   console.log(req.session.user.email)
   res.status(200).json({ user });
