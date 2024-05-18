@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { loginUserWithGoogle, getUserInfo } from "@/services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -15,6 +16,7 @@ import {
 import { Mail, LayoutDashboard } from "lucide-react";
 
 const Portal: React.FC = () => {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const email = useSelector((state: RootState) => state.userInfo.email);
     const checkIsAuthenticated = useRef(false);
@@ -51,7 +53,7 @@ const Portal: React.FC = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Streamlined Receipt and Invoice Extraction</CardTitle>
+                <CardTitle>Streamlined Receipt and Invoice Extraction.</CardTitle>
                 <CardDescription>Optimize expense tracking and integrate with management systems.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -60,7 +62,7 @@ const Portal: React.FC = () => {
                         <Mail className="mr-2 h-4 w-4" /> Login with Email
                     </Button>
                 ) : (
-                    <Button>
+                    <Button onClick={() => router.push("/dashboard")}>
                         <LayoutDashboard className="mr-2 h-4 w-4" />Dashboard
                     </Button>
                 )}
