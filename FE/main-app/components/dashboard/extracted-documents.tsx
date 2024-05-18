@@ -2,6 +2,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Card } from "../ui/card";
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {
     Table,
     TableBody,
     TableCell,
@@ -15,6 +24,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { updateReceipts } from "@/slices/userInfoSlice";
 import { ReceiptData } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { FileSpreadsheet } from "lucide-react";
 
 const transformPayload = (payload: any[]): ReceiptData => {
     return payload.map(item => ({
@@ -54,22 +64,22 @@ const ExtractedDocuments: React.FC = () => {
     const handleExportToCSV = async () => {
         try {
 
-        const response = await exportToCSV()
-        const blob = await response?.blob()
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.setAttribute("download", "Expenses.xlsx");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-    }
-    catch (error) {
-        console.error("Error exporting to CSV:", error);
-    }
+            const response = await exportToCSV()
+            const blob = await response?.blob()
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.setAttribute("download", "Expenses.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode?.removeChild(link);
+        }
+        catch (error) {
+            console.error("Error exporting to CSV:", error);
+        }
     }
 
-    const [pdfContent, setPdfContent] = useState<string | null>(null); 
+    const [pdfContent, setPdfContent] = useState<string | null>(null);
 
     const handleFetchPdf = async (fileName: string) => {
         try {
@@ -82,16 +92,15 @@ const ExtractedDocuments: React.FC = () => {
             } else {
                 console.error("Empty blob received.");
             }
-        
+
         } catch (error) {
             console.error("Error fetching PDF:", error);
         }
     };
 
     return (
-        <main className="w-full h-full flex items-center justify-center">
-            <Button onClick={() => handleExportToCSV()}>Export to CSV</Button>
-                <Card>
+        <main className="w-full h-full flex flex-col items-center justify-center gap-6">
+            <Card>
                 {!receipts.length ? (
                     <p>No receipts available.</p>
                 ) : (
@@ -111,27 +120,43 @@ const ExtractedDocuments: React.FC = () => {
                                 <TableRow key={key}>
                                     <TableCell className="font-medium">
                                         {receipt.companyName}
-                                        <Button onClick={() => handleFetchPdf(receipt.fileName)}>View PDF</Button>
                                     </TableCell>
                                     <TableCell>{receipt.date}</TableCell>
                                     <TableCell>{receipt.amount}</TableCell>
                                     <TableCell>{receipt.tax}</TableCell>
                                     <TableCell>{receipt.total}</TableCell>
                                     <TableCell>{receipt.address}</TableCell>
+                                    <TableCell>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" onClick={() => handleFetchPdf(receipt.fileName)}>View PDF</Button>
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>{receipt.companyName} - PDF</DialogTitle>
+                                                </DialogHeader>
+                                                <DialogDescription>
+                                                    {pdfContent && (
+                                                        <iframe
+                                                            title="PDF Viewer"
+                                                            src={pdfContent}
+                                                            width="100%"
+                                                            height="600px"
+                                                            className="rounded"
+                                                        ></iframe>
+                                                    )}
+                                                </DialogDescription>
+                                            </DialogContent>
+                                        </Dialog>
+
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 )}
-                {pdfContent && (
-                    <iframe
-                        title="PDF Viewer"
-                        src={pdfContent} // Set iframe source to PDF content URL
-                        width="100%"
-                        height="600px"
-                    ></iframe>
-                )}
             </Card>
+            <Button onClick={() => handleExportToCSV()}><FileSpreadsheet className="mr-2 h-4 w-4" />Export to CSV</Button>
         </main>
     );
 };
