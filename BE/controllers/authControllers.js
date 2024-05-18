@@ -70,8 +70,21 @@ const handleLogout = asyncHandler(async (req, res) => {
   }
 });
 
+const refreshAccessToken = async (req, res) => {
+  try {
+    const { tokens } = await googleOAuth2Client.refreshToken(req.session.user.refreshToken);
+    googleOAuth2Client.setCredentials(tokens);
+    req.session.user.accessToken = tokens.access_token;
+    res.json({ message: "Access token refreshed" });
+  } catch (err) {
+    res.status(401).json({ message: err.message });
+  }
+};
+
+
 module.exports = {
   handleGoogleLogin,
   handleGoogleCallback,
   handleLogout,
+  refreshAccessToken,
 };
