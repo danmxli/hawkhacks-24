@@ -10,7 +10,9 @@ const handleGoogleLogin = asyncHandler(async (req, res) => {
   res.json({ url: authorizeUrl });
 });
 
-const handleGoogleCallback = asyncHandler(async (req, res) => {
+// Function to handle the Google OAuth2 callback
+const handleGoogleCallback = async (req, res) => {
+  console.log('hi')
   try {
     const code = req.query.code;
     const tokens = await authService.getTokens(code);
@@ -21,7 +23,7 @@ const handleGoogleCallback = asyncHandler(async (req, res) => {
       refreshToken: tokens.refresh_token,
     };
     await authService.findOrCreateUser(userData.email);
-    return res.redirect(`${process.env.APP_URL}/expenses`);
+    return res.redirect(`${process.env.APP_URL}/dashboard`);
   } catch (err) {
     console.error("Error logging in with OAuth2", err);
     return res.status(500).json({ message: err.message });
