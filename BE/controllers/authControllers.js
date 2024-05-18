@@ -33,7 +33,6 @@ const handleGoogleLogin = async (req, res) => {
 
 // Function to handle the Google OAuth2 callback
 const handleGoogleCallback = async (req, res) => {
-  console.log('hi')
   try {
     const code = req.query.code;
     const { tokens } = await googleOAuth2Client.getToken(code);
@@ -81,7 +80,6 @@ const refreshAccessToken = async (req, res) => {
     res.status(401).json({ message: err.message });
   }
 };
-
 
 module.exports = {
   handleGoogleLogin,

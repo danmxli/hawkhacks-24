@@ -3,7 +3,7 @@ const User = require("../schemas/userSchema");
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = User.findOne({ email: req.session.email });
-  res.status(200).json(user);
+  res.status(200).json({ user: user.toObject() });
 });
 
 const updateUser = asyncHandler(async (req, res) => {
