@@ -203,10 +203,63 @@ const getEmailPdf = async (req, res) => {
   }
 };
 
+const downloadExpensesXLSX = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.session.user.email });
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const receipts = user.receipts;
+    const categoryGroups = {};
+
+    receipts.forEach((receipt) => {
+      const category = receipt.CATEGORY; 
+      if (!categoryGroups[category]) {
+        categoryGroups[category] = [];
+      }
+
+      const filteredExpense = {};
+      selectedFields.forEach((field) => {
+        if (receipt[field]) {
+          filteredExpense[field] = receipt[field];
+        }
+      });
+      categoryGroups[category].push(filteredExpense);
+    });
+
+    // Create a new workbook
+    const workbook = xlsx.utils.book_new();
+
+    // Add a worksheet for each unique category found
+    Object.keys(categoryGroups).forEach((category) => {
+      const worksheet = xlsx.utils.json_to_sheet(categoryGroups[category]);
+      xlsx.utils.book_append_sheet(workbook, worksheet, category); // Name the sheet after the category
+    });
+
+    // Write the Excel file to a buffer
+    const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+    // Set headers to prompt download
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="Expenses.xlsx"'
+    );
+    res.send(buffer);
+  } catch (error) {
+    console.error("Error while downloading Excel file:", error);
+    return res.status(500).json({ message: "Failed to download Excel file" });
+  }
+};
 
 module.exports = {
   downloadEmails,
   sendEmail,
-  getEmailPdf
+  getEmailPdf,
+  downloadExpensesXLSX,
 };

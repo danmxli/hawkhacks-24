@@ -7,5 +7,6 @@ const bodyParser = require('body-parser')
 router.get("/download-emails", authenticateUser, emailControllers.downloadEmails);
 router.get("/send-email", authenticateUser, emailControllers.sendEmail);
 router.get('/get-email-pdf/:fileName', authenticateUser, emailControllers.getEmailPdf)
+router.get('/export-to-csv', authenticateUser, emailControllers.downloadExpensesXLSX)
 
 module.exports = router;
