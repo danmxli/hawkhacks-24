@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
                     <h1 className="truncate ... font-semibold">{email}</h1>
                 </CardHeader>
                 <CardContent className="flex justify-center">
-                    <Button variant="secondary"><Settings className="mr-2 h-4 w-4" />My Settings</Button>
+                    <Button variant="secondary"><Settings className="mr-2 h-4 w-4" />Configure Settings</Button>
                 </CardContent>
             </Card>
         </main>

@@ -1,15 +1,18 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateEmail } from "@/slices/userInfoSlice";
 import Sidebar from "@/components/sidebar";
+import Homepage from "@/components/dashboard/homepage";
+import ExtractedDocuments from "@/components/dashboard/extracted-documents";
+import EmailAccounts from "@/components/dashboard/email-accounts";
 
 export default function Dashboard() {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const email = useSelector((state: RootState) => state.userInfo.email);
+    const dashboardPhase = useSelector((state: RootState) => state.dashboard.dashboardPhase);
     const checkIsAuthenticated = useRef(false);
 
     useEffect(() => {
@@ -32,11 +35,21 @@ export default function Dashboard() {
         }
     });
 
+    interface DashboardPhases {
+        [key: string]: React.ReactNode;
+    }
+
+    const currPhase: DashboardPhases = {
+        home: <Homepage />,
+        email: <EmailAccounts />,
+        docs: <ExtractedDocuments />
+    }
+
     return (
         <main className="flex">
             <Sidebar />
             <div className="flex-1">
-
+                {currPhase[dashboardPhase]}
             </div>
         </main>
     )
