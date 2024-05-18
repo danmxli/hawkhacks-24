@@ -3,7 +3,7 @@ const { userService } = require('../services');
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = await userService.getUserByEmail(req.session.email);
-  res.status(200).json({ user: user.toObject() });
+  res.status(200).json({ user });
 });
 
 const updateUser = asyncHandler(async (req, res) => {

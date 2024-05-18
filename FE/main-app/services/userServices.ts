@@ -1,16 +1,10 @@
+import authFetch from "@/utils/authFetch";
+
 export const loginUserWithGoogle = async () => {
     try {
-        const response = await fetch('http://localhost:3000/auth/google', {
+        const response = await authFetch('auth/google', {
             method: 'POST',
-            credentials: "include",
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
 
         const result = await response.json();
         return result;
@@ -21,17 +15,9 @@ export const loginUserWithGoogle = async () => {
 
 export const getUserInfo = async () => {
     try {
-        const response = await fetch('http://localhost:3000/users/', {
+        const response = await authFetch('users/', {
             method: 'GET',
-            credentials: "include",
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
 
         const result = await response.json();
         console.log(result)
