@@ -1,97 +1,87 @@
-import React from "react";
-
+import React, { useRef, useEffect } from "react";
 import { Card } from "../ui/card";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
+import { getUserInfo } from "@/services/userServices";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { updateReceipts } from "@/slices/userInfoSlice";
+import { ReceiptData } from "@/lib/utils";
 
-// TODO build types for receipt data
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
+const transformPayload = (payload: any[]): ReceiptData => {
+    return payload.map(item => ({
+        companyName: item.VENDOR_NAME,
+        amount: item.SUBTOTAL,
+        date: item.INVOICE_RECEIPT_DATE,
+        tax: item.TAX,
+        total: item.TOTAL,
+        address: item.VENDOR_ADDRESS,
+    }));
+};
 
 const ExtractedDocuments: React.FC = () => {
+    const fetchExecuted = useRef(false);
+    const dispatch = useDispatch<AppDispatch>();
+    const receipts = useSelector((state: RootState) => state.userInfo.receipts);
+
+    useEffect(() => {
+        const handleReceipts = async () => {
+            try {
+                const response = await getUserInfo();
+                if (response.user && response.user.receipts) {
+                    const transformedReceipts = transformPayload(response.user.receipts);
+                    dispatch(updateReceipts(transformedReceipts));
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        if (!fetchExecuted.current) {
+            handleReceipts();
+            fetchExecuted.current = true;
+        }
+    }, [dispatch]); // Include dispatch in the dependency array
+
     return (
         <main className="w-full h-full flex items-center justify-center">
             <Card>
-                <Table>
-                    <TableCaption>A list of your recent invoices.</TableCaption>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[300px]">Invoice</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Method</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {invoices.map((invoice) => (
-                            <TableRow key={invoice.invoice}>
-                                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                                <TableCell>{invoice.paymentStatus}</TableCell>
-                                <TableCell>{invoice.paymentMethod}</TableCell>
-                                <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                {!receipts.length ? (
+                    <p>No receipts available.</p>
+                ) : (
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Company</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Amount</TableHead>
+                                <TableHead>Tax</TableHead>
+                                <TableHead>Total</TableHead>
+                                <TableHead>Address</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell colSpan={3}>Total</TableCell>
-                            <TableCell className="text-right">$2,500.00</TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
+                        </TableHeader>
+                        <TableBody>
+                            {receipts.map((receipt) => (
+                                <TableRow key={receipt.companyName + receipt.date}>
+                                    <TableCell className="font-medium">{receipt.companyName}</TableCell>
+                                    <TableCell>{receipt.date}</TableCell>
+                                    <TableCell>{receipt.amount}</TableCell>
+                                    <TableCell>{receipt.tax}</TableCell>
+                                    <TableCell>{receipt.total}</TableCell>
+                                    <TableCell>{receipt.address}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                )}
             </Card>
         </main>
-    )
-}
+    );
+};
 
 export default ExtractedDocuments;
