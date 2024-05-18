@@ -129,6 +129,7 @@ const sendEmail = async (req, res) => {
     const { formattedDate, category } = await formatDateAndGenerateCategory(extractedData);
     extractedData.INVOICE_RECEIPT_DATE = formattedDate;
     extractedData.CATEGORY = category || 'food';
+    extractedData.FILE_NAME = path.basename(pdfFilePath);
     console.log('extractedData', extractedData)
     const user = await User.findOneAndUpdate(
       { email: req.session.user.email },
@@ -163,8 +164,31 @@ const parseTextractResponse = (response) => {
   return data;
 };
 
+const getEmailPdf = async (req, res) => {
+  const { fileName } = req.body;
+  const pdfFilePath = path.join(
+    __dirname,
+    "..",
+    "data",
+    "downloaded-pdfs",
+    fileName
+  );
+
+  if (!fs.existsSync(pdfFilePath)) {
+    return res.status(404).json({ message: "File not found" });
+  }
+
+  res.sendFile(pdfFilePath, (err) => {
+    if (err) {
+      console.error("Error sending file: ", err);
+      res.status(500).send("Error sending file");
+    }
+  });
+};
+
 
 module.exports = {
   downloadEmails,
   sendEmail,
+  getEmailPdf
 };
