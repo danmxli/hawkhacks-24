@@ -8,6 +8,7 @@ import Sidebar from "@/components/sidebar";
 import Homepage from "@/components/dashboard/homepage";
 import ExtractedDocuments from "@/components/dashboard/extracted-documents";
 import EmailAccounts from "@/components/dashboard/email-accounts";
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -49,10 +50,12 @@ export default function Dashboard() {
 
     return (
         <main className="flex">
+                <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <Sidebar />
             <div className="flex-1">
                 {currPhase[dashboardPhase]}
             </div>
+            </ThemeProvider>
         </main>
     )
 }
