@@ -35,6 +35,7 @@ const transformPayload = (payload: any[]): ReceiptData => {
         tax: item.TAX,
         total: item.TOTAL,
         address: item.VENDOR_ADDRESS,
+        category: item.CATEGORY,
     }));
 };
 
@@ -42,6 +43,7 @@ const ExtractedDocuments: React.FC = () => {
     const fetchExecuted = useRef(false);
     const dispatch = useDispatch<AppDispatch>();
     const receipts = useSelector((state: RootState) => state.userInfo.receipts);
+    console.log(receipts);
 
     useEffect(() => {
         const handleReceipts = async () => {
@@ -101,6 +103,7 @@ const ExtractedDocuments: React.FC = () => {
                     <TableHeader>
                         <TableRow className=" border-none">
                             <TableHead className="w-1/4">Company</TableHead>
+                            <TableHead className="w-1/4">Category</TableHead>
                             <TableHead className="w-1/4">Date</TableHead>
                             <TableHead className="w-1/4">Amount</TableHead>
                             <TableHead className="w-1/4">Tax</TableHead>
@@ -122,6 +125,7 @@ const ExtractedDocuments: React.FC = () => {
                                     <TableCell className="w-1/4 font-medium">
                                         {receipt.companyName}
                                     </TableCell>
+                                    <TableCell className="w-1/4">{receipt.category}</TableCell>
                                     <TableCell className="w-1/4">{receipt.date}</TableCell>
                                     <TableCell className="w-1/4">{receipt.amount}</TableCell>
                                     <TableCell className="w-1/4">{receipt.tax}</TableCell>
