@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/popover"
 import { Home, Mail, Files, CircleUserRoundIcon, Settings, Router } from "lucide-react";
 import ToggleThemeButton from "./ui/themeToggleBtn";
+import { useTheme } from "next-themes";
 
 const toggleOptions = [
     { icon: Home, label: "Home", phase: "home" },
@@ -27,6 +28,8 @@ const Sidebar: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const dashboardPhase = useSelector((state: RootState) => state.dashboard.dashboardPhase);
     const email = useSelector((state: RootState) => state.userInfo.email);
+    const {theme} = useTheme();
+
 
     const handleLogout = async () => {
         try {
@@ -41,7 +44,7 @@ const Sidebar: React.FC = () => {
     return (
         <main className="flex flex-col h-screen w-64 p-2 border-r">
             <div className="flex flex-col items-center gap-1 p-3 pb-5 border-b">
-                <img src="/logo.svg" alt="Logo" className="w-full h-12" />
+            <img src={theme === 'dark' ? './white-logo.svg' : './logo.svg'} alt="Logo" className="w-full h-12" />
             </div>
             <div className="pt-2 flex flex-col gap-1">
                 {toggleOptions.map((button, index) => {

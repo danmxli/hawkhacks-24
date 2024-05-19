@@ -24,6 +24,7 @@ import { updateReceipts } from "@/slices/userInfoSlice";
 import { ReceiptData } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { FileSpreadsheet } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const transformPayload = (payload: any[]): ReceiptData => {
     return payload.map(item => ({
@@ -110,9 +111,9 @@ const ExtractedDocuments: React.FC = () => {
                     </TableHeader>
                 </Table>
             </Card>
-            <Card className="w-full overflow-y-scroll relative">
+            <Card className="w-full overflow-y-scroll relative p-3">
                 {!receipts.length ? (
-                    <p>No receipts available.</p>
+                    <p className='ml-1'>No receipts available.</p>
                 ) : (
                     <Table className="table-fixed w-full">
                         <TableBody>
