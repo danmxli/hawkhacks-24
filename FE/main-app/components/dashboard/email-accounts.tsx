@@ -51,7 +51,7 @@ const EmailAccounts: React.FC = () => {
                 <CardContent>
                     {/* Add any additional content here */}
                 </CardContent>
-                <CardFooter className="flex gap-3">
+                <CardFooter className="flex flex-col gap-3">
                     <Button
                         onClick={() => handleSyncEmail()}
                         disabled={emailSyncStatus}
@@ -59,10 +59,26 @@ const EmailAccounts: React.FC = () => {
                     >
                         {emailSyncStatus ? 'Monitoring' : 'Start monitoring'}
                     </Button>
-                    {/* <Button onClick={async () => await sendEmail('uber-eats.pdf')}>send uber</Button>
+                    <div className="border-2 border-red-400  grid grid-cols-4 gap-2 items-center">
+        <h1 className="col-span-4">KEVINS CORNER 👾🤖🧑‍💻🕵️‍♂️🌐💻🖥️</h1>
+                    <Button onClick={async () => await sendEmail('amazon.pdf')}>send amazon</Button>
+                    <Button onClick={async () => await sendEmail('amazon.pdf')}>send amazon</Button>
+<Button onClick={async () => await sendEmail('amazon2.pdf')}>send amazon2</Button>
+<Button onClick={async () => await sendEmail('amazon3.pdf')}>send amazon3</Button>
+<Button onClick={async () => await sendEmail('amazon4.pdf')}>send amazon4</Button>
+<Button onClick={async () => await sendEmail('amazon5.pdf')}>send amazon5</Button>
+<Button onClick={async () => await sendEmail('amazon6.pdf')}>send amazon6</Button>
+<Button onClick={async () => await sendEmail('amazon7.pdf')}>send amazon7</Button>
+<Button onClick={async () => await sendEmail('amazon8.pdf')}>send amazon8</Button>
+<Button onClick={async () => await sendEmail('amazon9.pdf')}>send amazon9</Button>
+<Button onClick={async () => await sendEmail('amazon10.pdf')}>send amazon10</Button>
+<Button onClick={async () => await sendEmail('amazon11.pdf')}>send amazon11</Button>
+<Button onClick={async () => await sendEmail('amazon12.pdf')}>send amazon12</Button>
+
                     <Button onClick={async () => await sendEmail('mcdonalds.pdf')}>send mcdonalds</Button>
                     <Button onClick={async () => await sendEmail('grocery-receipt.pdf')}>send grocery</Button>
-                    <Button onClick={async () => await sendEmail('foodie-fruitie.pdf')}>send foodie fruitie</Button> */}
+                    <Button onClick={async () => await sendEmail('foodie-fruitie.pdf')}>send foodie fruitie</Button>
+                    </div>
                 </CardFooter>
             </Card>
         </main>
