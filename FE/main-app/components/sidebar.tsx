@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateDashboardPhase } from "@/slices/dashboardSlice";
 import { logoutUser } from "@/services/userServices";
+import { useTheme } from "next-themes";
+import ToggleThemeButton from "./ui/themeToggleBtn";
 
 import BlobSVG from "./ui/logo";
 import { Button } from "./ui/button";
@@ -13,12 +15,13 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Home, Mail, Files, CircleUserRoundIcon, Settings, Router } from "lucide-react";
+import { Home, Mail, Files, CircleUserRoundIcon, Settings, BarChart } from "lucide-react";
 
 const toggleOptions = [
     { icon: Home, label: "Home", phase: "home" },
     { icon: Mail, label: "Email Accounts", phase: "email" },
-    { icon: Files, label: "Documents", phase: "docs" }
+    { icon: Files, label: "Documents", phase: "docs" },
+    {icon: BarChart, label: "Analytics", phase: "analytics"}
 ];
 
 const Sidebar: React.FC = () => {
@@ -26,6 +29,8 @@ const Sidebar: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const dashboardPhase = useSelector((state: RootState) => state.dashboard.dashboardPhase);
     const email = useSelector((state: RootState) => state.userInfo.email);
+    const {theme} = useTheme();
+
 
     const handleLogout = async () => {
         try {
@@ -38,9 +43,9 @@ const Sidebar: React.FC = () => {
     }
 
     return (
-        <main className="flex flex-col h-screen w-64 p-2 border-r">
+        <main className={`flex flex-col h-screen w-64 p-2 border-r ${theme === 'dark' ? 'bg-neutral-900' : 'bg-white'}`}>
             <div className="flex flex-col items-center gap-1 p-3 pb-5 border-b">
-            <img src="/logo.svg" alt="Logo" className="w-full h-12" />
+            <img src={theme === 'dark' ? './white-logo.svg' : './logo.svg'} alt="Logo" className="w-full h-12" />
             </div>
             <div className="pt-2 flex flex-col gap-1">
                 {toggleOptions.map((button, index) => {
@@ -58,9 +63,11 @@ const Sidebar: React.FC = () => {
                     );
                 })}
             </div>
-            <div className="flex-grow max-h-fit"></div>
+            <div className="flex-grow flex items-end justify-center m-2">
+                <ToggleThemeButton /> 
+            </div>
             <Card className="flex-none w-full p-3">
-                <CardHeader>
+                <CardHeader className="flex flex-col justify-center">
                     <CircleUserRoundIcon className="w-full" />
                     <h1 className="truncate ... font-medium">{email}</h1>
                 </CardHeader>
