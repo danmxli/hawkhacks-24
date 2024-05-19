@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
     }
 
     return (
-        <main className="flex flex-col h-screen w-64 p-2 border-r">
+        <main className={`flex flex-col h-screen w-64 p-2 border-r ${theme === 'dark' ? 'bg-neutral-900' : 'bg-white'}`}>
             <div className="flex flex-col items-center gap-1 p-3 pb-5 border-b">
             <img src={theme === 'dark' ? './white-logo.svg' : './logo.svg'} alt="Logo" className="w-full h-12" />
             </div>
