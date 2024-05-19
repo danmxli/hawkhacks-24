@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateDashboardPhase } from "@/slices/dashboardSlice";
 import { logoutUser } from "@/services/userServices";
+import { useTheme } from "next-themes";
+import ToggleThemeButton from "./ui/themeToggleBtn";
 
 import BlobSVG from "./ui/logo";
 import { Button } from "./ui/button";
@@ -13,14 +15,13 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Home, Mail, Files, CircleUserRoundIcon, Settings, Router } from "lucide-react";
-import ToggleThemeButton from "./ui/themeToggleBtn";
-import { useTheme } from "next-themes";
+import { Home, Mail, Files, CircleUserRoundIcon, Settings, BarChart } from "lucide-react";
 
 const toggleOptions = [
     { icon: Home, label: "Home", phase: "home" },
     { icon: Mail, label: "Email Accounts", phase: "email" },
-    { icon: Files, label: "Documents", phase: "docs" }
+    { icon: Files, label: "Documents", phase: "docs" },
+    {icon: BarChart, label: "Analytics", phase: "analytics"}
 ];
 
 const Sidebar: React.FC = () => {

@@ -114,7 +114,7 @@ const ExtractedDocuments: React.FC = () => {
                     </TableHeader>
                 </Table>
             </Card>
-            <Card className="w-full overflow-y-scroll relative p-3">
+            <Card className="w-full overflow-y-scroll relative">
                 {!receipts.length ? (
                     <p className='ml-1'>No receipts available.</p>
                 ) : (

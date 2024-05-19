@@ -13,6 +13,34 @@ interface ReceiptItem {
   tax: string,
   total: string,
   address: string,
+  category: string,
 }
 
 export type ReceiptData = ReceiptItem[] | [];
+
+
+export interface ReceiptDBResponse {
+  VENDOR_NAME: string;
+  SUBTOTAL: string;
+  INVOICE_RECEIPT_DATE: string;
+  TAX: string;
+  TOTAL: string;
+  VENDOR_ADDRESS: string;
+  ZIP_CODE: string;
+  CATEGORY: string;
+  FILE_NAME: string;
+  _id: string;
+}
+
+export interface UserData {
+  _id: string;
+  email: string;
+  isEmailSynced: boolean;
+  receipts: ReceiptDBResponse[];
+  __v: number;
+}
+
+export interface ChartData {
+  vendor: string;
+  total: number;
+}
