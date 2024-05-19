@@ -5,11 +5,10 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
     Table,
     TableBody,
@@ -63,9 +62,8 @@ const ExtractedDocuments: React.FC = () => {
 
     const handleExportToCSV = async () => {
         try {
-
-            const response = await exportToCSV()
-            const blob = await response?.blob()
+            const response = await exportToCSV();
+            const blob = await response?.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
@@ -73,17 +71,15 @@ const ExtractedDocuments: React.FC = () => {
             document.body.appendChild(link);
             link.click();
             link.parentNode?.removeChild(link);
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error exporting to CSV:", error);
         }
-    }
+    };
 
     const [pdfContent, setPdfContent] = useState<string | null>(null);
 
     const handleFetchPdf = async (fileName: string) => {
         try {
-            console.log(fileName)
             const response = await getEmailPdf(fileName);
             const blob = await response?.blob();
             if (blob) {
@@ -92,7 +88,6 @@ const ExtractedDocuments: React.FC = () => {
             } else {
                 console.error("Empty blob received.");
             }
-
         } catch (error) {
             console.error("Error fetching PDF:", error);
         }
@@ -100,38 +95,38 @@ const ExtractedDocuments: React.FC = () => {
 
     return (
         <main className="w-full h-screen p-2 flex flex-col items-center justify-center gap-2">
-            <Card className="flex items-center">
-                <Table>
+            <Card className="w-full ">
+                <Table className="table-fixed w-full">
                     <TableHeader>
-                        <TableRow className="border-none">
-                            <TableHead>Company</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Amount</TableHead>
-                            <TableHead>Tax</TableHead>
-                            <TableHead>Total</TableHead>
-                            <TableHead>Address</TableHead>
+                        <TableRow className=" border-none">
+                            <TableHead className="w-1/4">Company</TableHead>
+                            <TableHead className="w-1/4">Date</TableHead>
+                            <TableHead className="w-1/4">Amount</TableHead>
+                            <TableHead className="w-1/4">Tax</TableHead>
+                            <TableHead className="w-1/4">Total</TableHead>
+                            <TableHead className="w-1/4">Address</TableHead>
+                            <TableHead className="w-1/4">PDF</TableHead>
                         </TableRow>
                     </TableHeader>
                 </Table>
-                <Button className="ml-3 mr-1" onClick={() => handleExportToCSV()}><FileSpreadsheet className="mr-2 h-4 w-4" />Export to CSV</Button>
             </Card>
-            <Card className="overflow-y-scroll relative">
+            <Card className="w-full overflow-y-scroll relative">
                 {!receipts.length ? (
                     <p>No receipts available.</p>
                 ) : (
-                    <Table>
+                    <Table className="table-fixed w-full">
                         <TableBody>
                             {receipts.map((receipt, key) => (
                                 <TableRow key={key}>
-                                    <TableCell className="font-medium">
+                                    <TableCell className="w-1/4 font-medium">
                                         {receipt.companyName}
                                     </TableCell>
-                                    <TableCell>{receipt.date}</TableCell>
-                                    <TableCell>{receipt.amount}</TableCell>
-                                    <TableCell>{receipt.tax}</TableCell>
-                                    <TableCell>{receipt.total}</TableCell>
-                                    <TableCell>{receipt.address}</TableCell>
-                                    <TableCell>
+                                    <TableCell className="w-1/4">{receipt.date}</TableCell>
+                                    <TableCell className="w-1/4">{receipt.amount}</TableCell>
+                                    <TableCell className="w-1/4">{receipt.tax}</TableCell>
+                                    <TableCell className="w-1/4">{receipt.total}</TableCell>
+                                    <TableCell className="w-1/4">{receipt.address}</TableCell>
+                                    <TableCell className="w-1/4">
                                         <Dialog>
                                             <DialogTrigger asChild>
                                                 <Button variant="outline" onClick={() => handleFetchPdf(receipt.fileName)}>View PDF</Button>
@@ -153,7 +148,6 @@ const ExtractedDocuments: React.FC = () => {
                                                 </DialogDescription>
                                             </DialogContent>
                                         </Dialog>
-
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -161,6 +155,13 @@ const ExtractedDocuments: React.FC = () => {
                     </Table>
                 )}
             </Card>
+            <Button 
+                className="fixed bottom-4 right-4 ml-3 mr-1" 
+                onClick={handleExportToCSV}
+            >
+                <FileSpreadsheet className="mr-2 h-4 w-4" />
+                Export to CSV
+            </Button>
         </main>
     );
 };

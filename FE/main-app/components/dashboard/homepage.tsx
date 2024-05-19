@@ -18,8 +18,12 @@ const Homepage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     return (
-        <main className="w-full h-full flex items-center justify-center">
-            <Card>
+        <main className="w-full h-full flex flex-col items-start p-8 gap-10">
+            <div className="flex flex-col gap-3">
+            <h1 className='text-4xl font-bold'>Welcome back, John!</h1>
+            <p className="text-neutral-500">TRACE is your personal assistant for managing receipts and tracking expenses, transforming hours of work into just a few clicks.</p>
+            </div>
+            <Card className="m-auto -translate-y-20">
                 <CardHeader>
                     <CardTitle>Your Dashboard for Managing Document Extraction.</CardTitle>
                     <CardDescription>Turn hours of work into just a few clicks.</CardDescription>

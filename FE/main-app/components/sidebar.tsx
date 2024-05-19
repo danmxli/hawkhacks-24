@@ -39,8 +39,8 @@ const Sidebar: React.FC = () => {
 
     return (
         <main className="flex flex-col h-screen w-64 p-2 border-r">
-            <div className="flex flex-col items-center gap-1 pb-2 border-b">
-                <BlobSVG className="w-24 p-3 rounded-full shadow" />
+            <div className="flex flex-col items-center gap-1 p-3 pb-5 border-b">
+            <img src="/logo.svg" alt="Logo" className="w-full h-12" />
             </div>
             <div className="pt-2 flex flex-col gap-1">
                 {toggleOptions.map((button, index) => {

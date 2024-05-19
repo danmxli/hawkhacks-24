@@ -55,7 +55,7 @@ const EmailAccounts: React.FC = () => {
                     <Button
                         onClick={() => handleSyncEmail()}
                         disabled={emailSyncStatus}
-                        className={emailSyncStatus ? 'bg-green-500 text-white' : ''}
+                        className={`w-full ${emailSyncStatus ? 'bg-green-500 text-white' : ''}`}
                     >
                         {emailSyncStatus ? 'Monitoring' : 'Start monitoring'}
                     </Button>
