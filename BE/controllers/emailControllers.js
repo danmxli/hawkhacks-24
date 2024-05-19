@@ -93,11 +93,11 @@ const sendEmail = async (req, res) => {
   // Set up email data
   let mailOptions = {
     from: '"Tony Qiu" <tonyqiu12345@gmail.com>', // Sender address
-    to: "tonyqiu12345@gmail.com", // List of receivers
+    to: "awesomejohndoetest69420@gmail.com", // List of receivers
     subject: "PDF FILE!!!!", // Subject line
-    text: "Hello Tony, this is a test email sent from an Express server!", // Plain text body
+    text: "Hello, this is a test invoice email sent from our Express server!", // Plain text body
     html:
-      "<b>Hello Tony, this is a test email sent from an Express server!</b>", // HTML body
+      "<b>Hello John, this is a test invoice email sent from our Express server!</b>", // HTML body
     attachments: [
       {
         filename: path.basename(pdfFilePath),
