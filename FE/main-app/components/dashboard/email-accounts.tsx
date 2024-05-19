@@ -62,7 +62,6 @@ const EmailAccounts: React.FC = () => {
                     <div className="border-2 border-red-400  grid grid-cols-4 gap-2 items-center">
         <h1 className="col-span-4">KEVINS CORNER 👾🤖🧑‍💻🕵️‍♂️🌐💻🖥️</h1>
                     <Button onClick={async () => await sendEmail('amazon.pdf')}>send amazon</Button>
-                    <Button onClick={async () => await sendEmail('amazon.pdf')}>send amazon</Button>
 <Button onClick={async () => await sendEmail('amazon2.pdf')}>send amazon2</Button>
 <Button onClick={async () => await sendEmail('amazon3.pdf')}>send amazon3</Button>
 <Button onClick={async () => await sendEmail('amazon4.pdf')}>send amazon4</Button>
